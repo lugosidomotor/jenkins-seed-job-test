@@ -1,4 +1,4 @@
-pipelineJob('YourJobName') {
+pipelineJob('pipeline-job') {
     description 'Job description here'
 
     parameters {
