@@ -1,93 +1,56 @@
-pipelineJob('k8s-deploy') {
+job('YourJobName') {
+    description 'Job description here'
 
-  parameters {
-    booleanParam(name: 'runDefault', defaultValue: true, description: 'If this checked: Hello World!')
-    string(name: 'userNameToPrint', defaultValue: '', description: 'If this specified and runDefault is false: Hello <NAME>!')
-    choice(name: 'clusterToDeploy', choices: ['docker-desktop'], description: 'Kubernetes cluster\'s name to deploy')
-    string(name: 'helmReleaseName', defaultValue: 'hello', description: 'Helm release name')
-    string(name: 'dockerImageVersion', defaultValue: 'latest', description: 'Docker image\'s version to deploy')
-    string(name: 'branchToBuild', defaultValue: 'main', description: 'Branch to build')
-  }
-  
-  environment {
-    def gitRepo = 'https://github.com/lugosidomotor/devops-assessment.git'
-    def dockerImage = 'hello'
-    def dockerRepository = 'ldomotor'
-    def gitCommit = ''
-    def shortCommit = ''
-    def txtContent = ''
-  }
-
-  stages {      
-    stage('Checkout Source') {
-      steps {
-        script {
-          git branch: params.branchToBuild, url: gitRepo
-          gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-          shortCommit = gitCommit.take(6)
-        }
-      }
+    // Adding parameters
+    parameters {
+        booleanParam('runDefault', true, 'If this checked: Hello World!')
+        stringParam('userNameToPrint', '', 'If this specified and runDefault is false: Hello <NAME>!')
+        choiceParam('clusterToDeploy', ['docker-desktop'], 'Kubernetes cluster\'s name to deploy')
+        stringParam('helmReleaseName', 'hello', 'Helm release name')
+        stringParam('dockerImageVersion', 'latest', 'Docker image\'s version to deploy')
+        stringParam('branchToBuild', 'main', 'Branch to build')
     }
 
-    stage('Docker Build') {
-      steps {
-        script {
-          dockerTag = "${env.BUILD_NUMBER}-${shortCommit}"
-          sh """
-            set -x
-            if [ ${params.runDefault} = true ]; then
-              docker build -t ${env.dockerRepository}/${env.dockerImage}:${dockerTag} -t ${env.dockerRepository}/${env.dockerImage}:latest .
+    scm {
+        git(gitRepo, branchToBuild)
+    }
+    triggers {
+        // Define triggers if needed
+    }
+    steps {
+        shell("""
+            // Checkout Source Stage
+            gitCommit=\$(git rev-parse HEAD)
+            shortCommit=\${gitCommit:0:6}
+
+            // Docker Build Stage
+            dockerTag=\${BUILD_NUMBER}-\${shortCommit}
+            if [ \${runDefault} = true ]; then
+              docker build -t ${dockerRepository}/${dockerImage}:\${dockerTag} -t ${dockerRepository}/${dockerImage}:latest .
             else
-              docker build --build-arg username='${params.userNameToPrint}' -t ${env.dockerRepository}/${env.dockerImage}:${dockerTag} -t ${env.dockerRepository}/${env.dockerImage}:latest .
+              docker build --build-arg username='\${userNameToPrint}' -t ${dockerRepository}/${dockerImage}:\${dockerTag} -t ${dockerRepository}/${dockerImage}:latest .
             fi
-          """
+
+            // Docker Login Stage
+            docker login -u \${dockerHubUser} -p \${dockerHubPassword}
+
+            // Docker Push Stage
+            docker image push --all-tags ${dockerRepository}/${dockerImage}
+
+            // Helm Deploy Stage
+            // Include your helm deploy commands here
+
+            // Collect Container Logs Stage
+            // Include your log collection commands here
+        """)
+    }
+    wrappers {
+        credentialsBinding {
+            usernamePassword('DOCKER_HUB_CREDENTIALS', 'dockerHubUser', 'dockerHubPassword')
+            file('KUBECONFIG_FILE', 'kubeconfig')
         }
-      }
     }
-
-    stage('Docker Login') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-        }
-      }
+    publishers {
+        // Define publishers for post-build actions
     }
-
-    stage('Docker Push') {
-      steps {
-        sh "docker image push --all-tags ${env.dockerRepository}/${env.dockerImage}"
-      }
-    }
-
-    stage('Helm Deploy') {
-      steps {
-        withCredentials([file(credentialsId: "${params.clusterToDeploy}-kubeconfig", variable: 'KUBECONFIG')]) {
-          sh "helm upgrade --install --force --set dockerImageVersion=${params.dockerImageVersion} --set name=${params.helmReleaseName} ${params.helmReleaseName} ./helm"
-        }
-      }
-    }
-
-    stage('Collect Container Logs') {
-      steps {
-        withCredentials([file(credentialsId: "${params.clusterToDeploy}-kubeconfig", variable: 'KUBECONFIG')]) {
-          script {
-            sh "echo 'Waiting for container creation...' && sleep 10"
-            sh "for pod in \$(kubectl get po --output=jsonpath={.items..metadata.name}); do kubectl logs \$pod; done > docker-logs.txt"
-            archiveArtifacts artifacts: 'docker-logs.txt'          
-            txtContent = sh(returnStdout: true, script: 'cat docker-logs.txt').trim()
-          }
-        }
-      }
-    }
-  }
-
-post {
-  always {
-    cleanWs deleteDirs: true
-    sh "docker system prune -a -f"
-    script {
-      currentBuild.description = "Message: ${txtContent}\nDocker image: ${env.dockerRepository}/${env.dockerImage}:${dockerTag}\nHelm release: ${params.helmReleaseName}"
-    }
-  }
-}
 }
