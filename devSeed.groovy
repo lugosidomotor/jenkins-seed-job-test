@@ -1,8 +1,4 @@
-folder('dev') {
-  description('Folder for development branch jobs')
-}
-
-job('dev/Job_DSL_Seed_Dev') {
+job('seed_job_from_dev') {
   parameters {
     stringParam('BRANCH_NAME', 'dev', 'The name of the branch to build from.')
   }
@@ -12,13 +8,15 @@ job('dev/Job_DSL_Seed_Dev') {
       remote {
         url 'https://github.com/lugosidomotor/jenkins-seed-job-test'
       }
-      branches('${BRANCH_NAME}')  // Use the parameter to specify the branch
+      branches('${BRANCH_NAME}')
     }
   }
   
   steps {
     jobDsl {
-      targets '*.groovy'
+      // Pass the BRANCH_NAME parameter to the DSL script
+      additionalParameters([BRANCH_NAME: '${BRANCH_NAME}'])
+      targets '**/jobs/*.groovy'
     }
   }
 }
