@@ -10,8 +10,11 @@ job('seed/seed_job_from_main') {
       }
     }
   }
+
   steps {
     jobDsl {
+      // Pass the BRANCH_NAME parameter to the DSL script
+      additionalParameters([BRANCH_NAME: 'main'])
       targets '**/jobs/*.groovy'
     }
   }
