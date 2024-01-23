@@ -1,4 +1,4 @@
-job('YourJobName') {
+job('job') {
     description 'Job description here'
 
     // Adding parameters
