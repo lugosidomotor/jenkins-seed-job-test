@@ -1,11 +1,12 @@
-# Install Jenkins
+## Install Jenkins
 ```bash
 sudo docker run -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17
 ```
-# Create Job DSL for Seed job
+## Create Job DSL for Seed job
 
 1. Create new freestyle job
-2. Process Job DSLs
+2. Build Steps > Process Job DSLs
+3. Add the following code:
 ```bash
 job('Job_DSL_Seed') {
   scm {
@@ -23,3 +24,4 @@ job('Job_DSL_Seed') {
 }
 ```
 3. Approve script in Dashboard > Manage Jenkins > ScriptApproval
+4. Press 'Build Now'
