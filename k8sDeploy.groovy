@@ -19,29 +19,7 @@ job('YourJobName') {
     }
     steps {
         shell("""
-            // Checkout Source Stage
-            gitCommit=\$(git rev-parse HEAD)
-            shortCommit=\${gitCommit:0:6}
-
-            // Docker Build Stage
-            dockerTag=\${BUILD_NUMBER}-\${shortCommit}
-            if [ \${runDefault} = true ]; then
-              docker build -t ${dockerRepository}/${dockerImage}:\${dockerTag} -t ${dockerRepository}/${dockerImage}:latest .
-            else
-              docker build --build-arg username='\${userNameToPrint}' -t ${dockerRepository}/${dockerImage}:\${dockerTag} -t ${dockerRepository}/${dockerImage}:latest .
-            fi
-
-            // Docker Login Stage
-            docker login -u \${dockerHubUser} -p \${dockerHubPassword}
-
-            // Docker Push Stage
-            docker image push --all-tags ${dockerRepository}/${dockerImage}
-
-            // Helm Deploy Stage
-            // Include your helm deploy commands here
-
-            // Collect Container Logs Stage
-            // Include your log collection commands here
+            echo 'hello'
         """)
     }
     wrappers {
