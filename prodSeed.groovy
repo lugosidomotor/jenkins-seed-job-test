@@ -1,4 +1,4 @@
-folder('dev') {
+folder('seed') {
   description('Folder for development branch jobs')
 }
 
