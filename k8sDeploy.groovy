@@ -23,12 +23,7 @@ job('YourJobName') {
         """)
     }
     wrappers {
-        credentialsBinding {
-            usernamePassword('DOCKER_HUB_CREDENTIALS', 'dockerHubUser', 'dockerHubPassword')
-            file('KUBECONFIG_FILE', 'kubeconfig')
-        }
     }
     publishers {
-        // Define publishers for post-build actions
     }
 }
