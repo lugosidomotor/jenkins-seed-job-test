@@ -1,4 +1,4 @@
-job('k8s-deploy') {
+pipelineJob('k8s-deploy') {
 
   parameters {
     booleanParam(name: 'runDefault', defaultValue: true, description: 'If this checked: Hello World!')
