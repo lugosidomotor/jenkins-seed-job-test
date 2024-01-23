@@ -23,5 +23,5 @@ job('Job_DSL_Seed') {
   }
 }
 ```
-3. Approve script in Dashboard > Manage Jenkins > ScriptApproval
-4. Press 'Build Now'
+4. Approve script in Dashboard > Manage Jenkins > ScriptApproval
+5. Press 'Build Now'
