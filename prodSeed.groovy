@@ -18,7 +18,7 @@ job('seed/seed_job_from_main') {
   
   steps {
     jobDsl {
-      targets '**/jobs/*.groovy'
+      targets '/jobs/*.groovy'
       // Use scriptText to pass the BRANCH_NAME to the DSL script
       scriptText '''
         def branchName = params.BRANCH_NAME
