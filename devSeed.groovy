@@ -18,9 +18,12 @@ job('seed/seed_job_from_dev') {
   
   steps {
     jobDsl {
-      // Pass the BRANCH_NAME parameter to the DSL script
-      additionalParameters([BRANCH_NAME: '${BRANCH_NAME}'])
       targets '**/jobs/*.groovy'
+      // Use scriptText to pass the BRANCH_NAME to the DSL script
+      scriptText '''
+        def branchName = params.BRANCH_NAME
+        evaluate(new File('path/to/jobs/folder/example.groovy'))
+      '''
     }
   }
 }
