@@ -12,7 +12,7 @@ job('YourJobName') {
     }
 
     scm {
-        git(gitRepo, branchToBuild)
+        github('lugosidomotor/devops-assessment', '*/main')
     }
     triggers {
         // Define triggers if needed
