@@ -1,4 +1,8 @@
-job('seed_job_from_dev') {
+folder('seed') {
+  description('Folder for development branch jobs')
+}
+
+job('seed/seed_job_from_dev') {
   parameters {
     stringParam('BRANCH_NAME', 'dev', 'The name of the branch to build from.')
   }

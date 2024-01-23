@@ -1,4 +1,8 @@
-job('seed_job_from_main') {
+folder('dev') {
+  description('Folder for development branch jobs')
+}
+
+job('seed/seed_job_from_main') {
   scm {
     git {
       remote {
