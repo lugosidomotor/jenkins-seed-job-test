@@ -22,14 +22,14 @@ job('seed/seed_job_from_main') {
         def branchName = "${BRANCH_NAME}"
         def scriptDirectory = new File('jobs')
         if (scriptDirectory.exists()) {
-            scriptDirectory.eachFile { file ->
-                if (file.name.endsWith('.groovy')) {
-                    evaluate(file)
-                }
+            scriptDirectory.eachFileMatch(FileType.FILES, ~/.*\.groovy/) { file ->
+                println "Fájl kiértékelése: ${file}"
+                evaluate(file)
             }
         } else {
-            println("The 'jobs' directory was not found in the workspace.")
+            println "A 'jobs' mappa nem található a munkaterületen."
         }
+
       '''
     }
   }
