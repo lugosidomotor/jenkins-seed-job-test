@@ -20,10 +20,15 @@ job('seed/seed_job_from_main') {
     jobDsl {
       scriptText '''
         def branchName = "${BRANCH_NAME}"
-        new File('jobs').eachFile { file ->
-          if (file.name.endsWith('.groovy')) {
-            evaluate(file)
-          }
+        def scriptDirectory = new File('jobs')
+        if (scriptDirectory.exists()) {
+            scriptDirectory.eachFile { file ->
+                if (file.name.endsWith('.groovy')) {
+                    evaluate(file)
+                }
+            }
+        } else {
+            println("The 'jobs' directory was not found in the workspace.")
         }
       '''
     }
