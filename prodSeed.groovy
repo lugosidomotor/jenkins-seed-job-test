@@ -23,7 +23,7 @@ job('seed/seed_job_from_main') {
     // Job DSL script
     jobDsl {
       scriptText '''
-        // A Jenkins Job DSL script részei...
+        def branchName = "${BRANCH_NAME}"
 
         def workspace = new File("${WORKSPACE}")
         def scriptDirectory = new File(workspace, 'jobs')
