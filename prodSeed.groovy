@@ -17,6 +17,8 @@ job('seed/seed_job_from_main') {
   }
   
   steps {
+    shell('pwd')
+    shell('ls -la')
     jobDsl {
       scriptText '''
         def branchName = "${BRANCH_NAME}"
