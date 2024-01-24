@@ -1,5 +1,5 @@
-// example.groovy
-def branchName = BRANCH_NAME ?: 'main' // Default to 'main' if BRANCH_NAME is not provided
+// Példa egy DSL scriptre (pl. example.groovy)
+def branchName = binding.variables.get('branchName') ?: 'main'
 
 job("example-${branchName}") {
   steps {
