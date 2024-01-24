@@ -4,7 +4,7 @@ folder('seed') {
 
 job('seed/seed_job_from_main') {
   parameters {
-    stringParam('BRANCH_NAME', 'dev', 'The name of the branch to build from.')
+    stringParam('BRANCH_NAME', 'dev', 'A branch neve, amiből építeni fogunk.')
   }
   
   scm {
@@ -18,8 +18,14 @@ job('seed/seed_job_from_main') {
   
   steps {
     jobDsl {
-      additionalParameters([BRANCH_NAME: '${BRANCH_NAME}'])
-      targets '*jobs/*.groovy'
+      scriptText '''
+        def branchName = "${BRANCH_NAME}"
+        new File('jobs').eachFile { file ->
+          if (file.name.endsWith('.groovy')) {
+            evaluate(file)
+          }
+        }
+      '''
     }
   }
 }
