@@ -4,7 +4,7 @@ folder('seed') {
 
 job('seed/seed_job_from_main') {
   parameters {
-    stringParam('BRANCH_NAME', 'main', 'The name of the branch to build from.')
+    stringParam('BRANCH_NAME', 'dev', 'The name of the branch to build from.')
   }
   
   scm {
@@ -18,12 +18,8 @@ job('seed/seed_job_from_main') {
   
   steps {
     jobDsl {
-      targets '/jobs/*.groovy'
-      // Use scriptText to pass the BRANCH_NAME to the DSL script
-      scriptText '''
-        def branchName = params.BRANCH_NAME
-        evaluate(new File('path/to/jobs/folder/example.groovy'))
-      '''
+      additionalParameters([BRANCH_NAME: '${BRANCH_NAME}'])
+      targets '*jobs/*.groovy'
     }
   }
 }
