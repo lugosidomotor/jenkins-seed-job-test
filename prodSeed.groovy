@@ -30,7 +30,7 @@ job('seed/seed_job_from_main') {
                 }
             }
         } else {
-            println("The 'jobs' directory was not found in the workspace.")
+            println("The 'jobs' directory was not found. Current directory: " + new File(".").getAbsolutePath())
         }
       '''
     }
