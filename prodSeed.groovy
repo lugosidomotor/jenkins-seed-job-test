@@ -23,7 +23,7 @@ job('seed/seed_job_from_main') {
     // Job DSL script
     jobDsl {
       scriptText '''
-        def branchName = "${BRANCH_NAME}"
+        def branchName = BRANCH_NAME // Ez a változó a job paramétereiből származik
 
         def workspace = new File("${WORKSPACE}")
         def scriptDirectory = new File(workspace, 'jobs')
@@ -32,7 +32,10 @@ job('seed/seed_job_from_main') {
         if (scriptDirectory.exists()) {
             scriptDirectory.eachFile { file ->
                 if (file.name.endsWith('.groovy')) {
-                    evaluate(file)
+                    // Átadás a 'branchName' változót az értékelt scriptnek
+                    def script = file.text
+                    def binding = new Binding([branchName: branchName])
+                    evaluate(script, binding)
                 }
             }
         } else {
