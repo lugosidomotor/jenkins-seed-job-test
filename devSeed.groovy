@@ -1,20 +1,22 @@
-// Define a freestyle job
-freestyleJob('freestyle-dsl-job') {
-    // SCM step for code checkout
-    scm {
-        git('https://github.com/lugosidomotor/jenkins-seed-job-test') // Replace with your repository URL
-        // Additional SCM configuration can be added here
+job('SeedJob') {
+    parameters {
+        stringParam('BRANCH_NAME', 'default-branch', 'The name of the branch to seed from')
     }
 
-    // Build steps
-    steps {
-        // DSL step to seed Groovy files from '!jobs!' folder
-        dsl {
-            // Assuming '!jobs!' is a directory in the checked-out repository
-            fileFinder('!jobs!/*.groovy') { 
-                // Apply DSL script from each found file
-                file -> external(file)
+    scm {
+        git {
+            remote {
+                url 'https://github.com/lugosidomotor/jenkins-seed-job-test'
+                credentials('your-credentials-id')
             }
+            branch '${BRANCH_NAME}'
+        }
+    }
+
+    steps {
+        dsl {
+            external('jobs/*.groovy')
         }
     }
 }
+
