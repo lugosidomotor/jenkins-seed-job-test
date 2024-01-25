@@ -7,23 +7,25 @@ job('seed/seed_job_from_dev') {
     stringParam('BRANCH_NAME', 'dev', 'The name of the branch to build from.')
   }
   
-  scm {
-    git {
-      remote {
-        url 'https://github.com/lugosidomotor/jenkins-seed-job-test'
-      }
-      // Use environment variable for the branch name
-      branches("*/${env.BRANCH_NAME}")
-    }
-  }
-  
   steps {
+    script {
+      // Assign the parameter value to a variable within a script block
+      def branchName = BRANCH_NAME
+    }
+
+    scm {
+      git {
+        remote {
+          url 'https://github.com/lugosidomotor/jenkins-seed-job-test'
+        }
+        // Use the variable
+        branches("*/${branchName}")
+      }
+    }
+
     jobDsl {
-      // Use environment variable for the branch name
-      def branchName = env.BRANCH_NAME
-      targets '*jobs/*.groovy'
-      // Correct syntax for map assignment in Groovy
       additionalParameters([branchName: branchName])
+      targets '*jobs/*.groovy'
     }
   }
 }
