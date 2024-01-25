@@ -12,15 +12,15 @@ job('seed/seed_job_from_dev') {
       remote {
         url 'https://github.com/lugosidomotor/jenkins-seed-job-test'
       }
-      // Use double quotes for string interpolation
-      branches("${params.BRANCH_NAME}")
+      // Directly use the parameter name
+      branches("${BRANCH_NAME}")
     }
   }
   
   steps {
     jobDsl {
-      // Directly use params.BRANCH_NAME
-      def branchName = params.BRANCH_NAME
+      // Use the parameter directly
+      def branchName = BRANCH_NAME
       targets '*jobs/*.groovy'
       // Correct syntax for map assignment in Groovy
       additionalParameters([branchName: branchName])
