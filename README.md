@@ -1,3 +1,5 @@
+https://github.com/jenkinsci/job-dsl-plugin/blob/master/docs/User-Power-Moves.md
+
 ## Install Jenkins
 ```bash
 sudo docker run -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17
