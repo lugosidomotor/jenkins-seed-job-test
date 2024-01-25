@@ -12,13 +12,15 @@ job('seed/seed_job_from_dev') {
       remote {
         url 'https://github.com/lugosidomotor/jenkins-seed-job-test'
       }
-      branches('${BRANCH_NAME}')
+      // Use double quotes for string interpolation
+      branches("${params.BRANCH_NAME}")
     }
   }
   
   steps {
     jobDsl {
-      def branchName = BRANCH_NAME
+      // Directly use params.BRANCH_NAME
+      def branchName = params.BRANCH_NAME
       targets '*jobs/*.groovy'
       additionalParameters [branchName: branchName]
     }
