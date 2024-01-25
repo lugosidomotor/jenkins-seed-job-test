@@ -1,4 +1,4 @@
-job('seed-from-dev') {
+job('seed-from-main') {
     parameters {
         stringParam('BRANCH_NAME', 'default-branch', 'The name of the branch to seed from')
     }
