@@ -15,11 +15,6 @@ freestyleJob('freestyle-dsl-job') {
                 // Apply DSL script from each found file
                 file -> external(file)
             }
-
-            // Additional DSL configuration based on your examples
-            removeAction('DISABLE')
-            ignoreExisting()
-            additionalClasspath('lib')
         }
     }
 }
