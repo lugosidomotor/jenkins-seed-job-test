@@ -4,6 +4,8 @@ https://jenkinsci.github.io/job-dsl-plugin/#path/freeStyleJob-steps-dsl
 
 https://souravatta.medium.com/create-jenkins-seedjob-using-job-dsl-script-ac337afd9986
 
+https://stackoverflow.com/questions/35898020/job-dsl-to-create-pipeline-type-job
+
 ## Install Jenkins
 ```bash
 sudo docker run -p 8080:8080 -p 50000:50000 --restart=on-failure jenkins/jenkins:lts-jdk17
