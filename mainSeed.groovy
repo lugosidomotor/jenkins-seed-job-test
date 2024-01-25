@@ -1,6 +1,6 @@
 job('seed-from-main') {
     parameters {
-        stringParam('BRANCH_NAME', 'default-branch', 'The name of the branch to seed from')
+        stringParam('BRANCH_NAME', 'main', 'The name of the branch to seed from')
     }
 
     scm {
