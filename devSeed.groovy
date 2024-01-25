@@ -16,7 +16,7 @@ job('seed/seed_job_from_dev') {
     jobDsl {
       targets '*jobs/*.groovy'
       additionalParameters {
-        branchName dev
+        branchName 'dev'
       }
     }
   }
