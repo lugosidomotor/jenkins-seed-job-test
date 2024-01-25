@@ -1,5 +1,5 @@
 // Example of a DSL script (e.g., example.groovy)
-def branchName = binding.variables.get('branchName') ?: 'main'
+def branchName = BRANCH_NAME
 
 job("example-${branchName}") {
     steps {
