@@ -22,7 +22,8 @@ job('seed/seed_job_from_dev') {
       // Directly use params.BRANCH_NAME
       def branchName = params.BRANCH_NAME
       targets '*jobs/*.groovy'
-      additionalParameters [branchName: branchName]
+      // Correct syntax for map assignment in Groovy
+      additionalParameters([branchName: branchName])
     }
   }
 }
