@@ -1,4 +1,8 @@
-// Example of a DSL script (e.g., example.groovy)
+def folderPath = build.workspace.child(FOLDER)
+
+if (!folderPath.exists()) {
+    folderPath.mkdirs()
+}
 
 def jobPrefix = FOLDER ? "${FOLDER}/" : ""
 
