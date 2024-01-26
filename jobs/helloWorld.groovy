@@ -1,6 +1,6 @@
 // Example of a DSL script (e.g., example.groovy)
 
-def jobPrefix = params.FOLDER ? "${params.FOLDER}/" : ""
+def jobPrefix = ${FOLDER} ? "${FOLDER}/" : ""
 
 job("${jobPrefix}helloWorld-${BRANCH_NAME}") {
     steps {
