@@ -1,9 +1,8 @@
 def jobPrefix = FOLDER ? "${FOLDER}/" : ""
 
-// Ha van megadva mappa, akkor hozzuk létre
 if (FOLDER) {
     folder(FOLDER) {
-        displayName("${FOLDER} Mappa")
+        displayName("${FOLDER}")
     }
 }
 
