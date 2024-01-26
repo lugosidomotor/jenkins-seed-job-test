@@ -6,7 +6,6 @@ if (FOLDER) {
         displayName("${FOLDER} Mappa")
     }
 }
-def jobPrefix = FOLDER ? "${FOLDER}/" : ""
 
 job("${jobPrefix}helloWorld-${BRANCH_NAME}") {
     steps {
