@@ -1,9 +1,11 @@
-def folderPath = build.workspace.child(FOLDER)
+def jobPrefix = FOLDER ? "${FOLDER}/" : ""
 
-if (!folderPath.exists()) {
-    folderPath.mkdirs()
+// Ha van megadva mappa, akkor hozzuk létre
+if (FOLDER) {
+    folder(FOLDER) {
+        displayName("${FOLDER} Mappa")
+    }
 }
-
 def jobPrefix = FOLDER ? "${FOLDER}/" : ""
 
 job("${jobPrefix}helloWorld-${BRANCH_NAME}") {
