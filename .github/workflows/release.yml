@@ -12,15 +12,12 @@ jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: folder
-
     - name: Create Release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        commitish: folder
         tag_name: ${{ github.event.inputs.tag }}
         release_name: Release ${{ github.event.inputs.tag }}
         draft: false
